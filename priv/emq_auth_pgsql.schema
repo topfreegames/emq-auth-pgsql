@@ -77,9 +77,3 @@ end}.
 {mapping, "auth.pgsql.acl_query", "emq_auth_pgsql.acl_query", [
   {datatype, string}
 ]}.
-
-{mapping, "auth.pgsql.acl_nomatch", "emq_auth_pgsql.acl_nomatch", [
-  {default, deny},
-  {datatype, {enum, [deny, allow]}}
-]}.
-
