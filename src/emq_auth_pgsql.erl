@@ -74,7 +74,7 @@ passwd_hash(pbkdf2, {Salt, Password, Macfun, Iterations, Dklen}) ->
 	case pbkdf2:pbkdf2(Macfun, Password, Salt, Iterations, Dklen) of
 		 {ok, Hexstring} -> string:slice(base64:encode(Hexstring), 0, 32);
 		 {error, Error} -> lager:error("PasswdHash with pbkdf2 error:~p", [Error]), <<>>
-	end;
+	end.
 
 description() -> "Custom Authentication with PostgreSQL".
 
