@@ -68,9 +68,15 @@ check_pass(PassHash, PassHash) -> ok;
 check_pass(_, _)               -> {error, password_error}. 
 
 hash(Type, Password) ->
-    emqttd_auth_mod:passwd_hash(Type, Password).
+    passwd_hash(Type, Password).
 
-description() -> "Authentication with PostgreSQL".
+passwd_hash(pbkdf2, {Salt, Password, Macfun, Iterations, Dklen}) ->
+	case pbkdf2:pbkdf2(Macfun, Password, Salt, Iterations, Dklen) of
+		 {ok, Hexstring} -> string:slice(base64:encode(Hexstring), 0, 32);
+		 {error, Error} -> lager:error("PasswdHash with pbkdf2 error:~p", [Error]), <<>>
+	end;
+
+description() -> "Custom Authentication with PostgreSQL".
 
 %%--------------------------------------------------------------------
 %% Is Superuser?
